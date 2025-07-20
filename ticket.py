@@ -1,28 +1,21 @@
-import datetime
-
 class Ticket:
+    def __init__(self, ticket_id, title, description, category, issuer):
+        self.ticket_id = ticket_id
+        self.title = title
+        self.description = description
+        self.category = category
+        self.issuer = issuer
+        self.status = 'Open'
+        self.resolver = None
+        self.resolver_message = None  
 
-  STAT_OPEN = "Open"
-  STAT_RESOLVED = "Resolved"
-  
-  def __init__(self, ticket_id: int, title: str, description:str , category:str, issuer_username:str):
-      self.ticket_id = ticket_id
-      self.title = title
-      self.description = description
-      self.category = category.capitalize() or "Other"
-      
-      self.issuer_username = issuer_username
-      self.created_at = datetime.now()
+    def resolve(self, resolver, message):
+        self.status = 'Resolved'
+        self.resolver = resolver
+        self.resolver_message = message
 
-      self.status = "Open"
-      self.resolved_by = None
-      self.resolve_at = None
-
-  def resolve(self, resolver_username):
-    self.status = "Resolved"
-    self.resolved_by = resolver_name
-    self.resolved_at = datetime.datetime.now()
-
-  def __str__(self):
-    return(f"Ticket ID: {self.ticket_id} | Title: {self.title} | Category: {self.category}"
-          f"Status: {self.status} | Issuer: {self.issuer} | Created: {self.created_at.strftime('%d-%m-%Y %H:%M)}
+    def __str__(self):
+        resolved_by = f" (Resolved by {self.resolver})" if self.status == 'Resolved' else ""
+        message = f"\n   Message from resolver: {self.resolver_message}" if self.resolver_message else ""
+        return (f"[#{self.ticket_id:03}] {self.title} "
+                f"({self.category}) - {self.status}{resolved_by}{message}")
